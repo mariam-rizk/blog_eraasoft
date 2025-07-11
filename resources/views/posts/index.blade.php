@@ -20,6 +20,7 @@
                 <th>Title</th>
                 <th>Content</th>
                 <th>Published</th>
+                <th>Categories</th>
                 <th>Created At</th>
                 <th>Updated At</th>
                 <th>Actions</th>
@@ -31,6 +32,11 @@
                 <td>{{ $post->title }}</td>
                 <td>{{ Str::limit($post->content, 50) }}</td>
                 <td>{{ $post->is_publish ? 'Yes' : 'No' }}</td>
+                <td>
+                    @foreach ($post->categories as $category)
+                        <span class="badge bg-secondary">{{ $category->name }}</span>
+                    @endforeach
+                </td>
                 <td>{{ $post->created_at->format('Y-m-d') }}</td>
                 <td>{{ $post->updated_at->format('Y-m-d') }}</td>
                 <td>

@@ -36,6 +36,18 @@
                                 </select>
                                 <label for="is_publish">Is Published</label>
                             </div>
+                                <div class="form-floating mb-3">
+                                <select class="form-select" name="categories[]" multiple required>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}" 
+                                            {{ $post->categories->contains($category->id) ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <label for="categories">Categories</label>
+                            </div>
+
 
                             <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Update</button>
                         </form>

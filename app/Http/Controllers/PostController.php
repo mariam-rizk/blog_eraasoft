@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -21,7 +22,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all();
+        return view('posts.create', ['categories' => $categories]);
     }
 
     /**
@@ -29,7 +31,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        Post::create($request->all());
+        $post = Post::create($request->all());
+        $post->categories()->attach($request->categories);
         return redirect('/posts');
     }
 
@@ -47,8 +50,9 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
+        $categories = Category::all();
         $post = Post::findorFail($id);
-        return view('posts.edit',['post' => $post]);
+        return view('posts.edit',['post' => $post, 'categories' => $categories]);
     }
 
     /**
@@ -58,6 +62,7 @@ class PostController extends Controller
     {
         $post = Post::findorFail($id);
         $post->update($request->all());
+         $post->categories()->sync($request->categories);
         return redirect('/posts');
     }
 
