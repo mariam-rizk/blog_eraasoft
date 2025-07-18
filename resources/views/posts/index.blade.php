@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.website_app')
 @section("title","All Posts")
 <!-- Page Header-->
 @section("header_content")
