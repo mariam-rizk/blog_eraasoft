@@ -1,4 +1,4 @@
-@extends('layouts.website_app')
+@extends('layouts.website')
 @section("title","Sample Post")
 <!-- Page Header-->
 @section("header_photo", 'assets/img/post-bg.jpg')

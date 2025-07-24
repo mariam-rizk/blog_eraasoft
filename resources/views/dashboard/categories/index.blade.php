@@ -1,18 +1,14 @@
-@extends('layouts.app')
-@section("title","All Categories")
-<!-- Page Header-->
-@section("header_content")
-    <div class="site-heading">
-        <h1>Clean Blog</h1>
-        <span class="subheading">A Blog Theme by Start Bootstrap</span>
-    </div>
-@endsection
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            All Categories
+        </h2>
+    </x-slot>
 
-@section("content")
-<div class="container px-4 px-lg-5 my-5">
+ <div class="container px-4 px-lg-5 my-5">
     <div class="d-flex justify-content-between mb-3">
         <h2>All Categories</h2>
-        <a href="/categories/create" class="btn btn-primary">Add Category</a>
+        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary">Add Category</a>
     </div>
     <table class="table table-striped">
         <thead>
@@ -32,8 +28,8 @@
                 <td>{{ $category->created_at->format('Y-m-d') }}</td>
                 <td>{{ $category->updated_at->format('Y-m-d') }}</td>
                 <td>
-                    <a href="/categories/{{ $category->id }}/edit" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="/categories/{{ $category->id }}" method="POST" style="display:inline;">
+                    <a href="{{ route('dashboard.categories.edit', $category->id) }}"  class="btn btn-sm btn-warning">Edit</a>
+                    <form action="{{ route('dashboard.categories.destroy', $category->id) }}"  method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
@@ -44,4 +40,4 @@
         </tbody>
     </table>
 </div>
-@endsection
+</x-app-layout>

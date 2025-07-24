@@ -14,7 +14,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return view('posts.index',['posts'=>$posts]);
+        return view('dashboard.posts.index', ['posts' => $posts]);
     }
 
     /**
@@ -23,7 +23,7 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('posts.create', ['categories' => $categories]);
+        return view('dashboard.posts.create', ['categories' => $categories]);
     }
 
     /**
@@ -31,9 +31,18 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $post = Post::create($request->all());
-        $post->categories()->attach($request->categories);
-        return redirect('/posts');
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'is_publish' => 'required|boolean',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
+        ]);
+
+        $post = Post::create($validated);
+        $post->categories()->attach($validated['categories']);
+        return redirect()->route('dashboard.posts.index');
+
     }
 
     /**
@@ -41,8 +50,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::Where('id' , $id)->first();
-        return view('posts.show',['post' => $post]);
+        $post = Post::where('id', $id)->first();
+        return view('dashboard.posts.show', ['post' => $post]);
     }
 
     /**
@@ -51,8 +60,8 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $categories = Category::all();
-        $post = Post::findorFail($id);
-        return view('posts.edit',['post' => $post, 'categories' => $categories]);
+        $post = Post::findOrFail($id);
+        return view('dashboard.posts.edit', ['post' => $post, 'categories' => $categories]);
     }
 
     /**
@@ -60,10 +69,19 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $post = Post::findorFail($id);
-        $post->update($request->all());
-         $post->categories()->sync($request->categories);
-        return redirect('/posts');
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'is_publish' => 'required|boolean',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
+        ]);
+
+        $post = Post::findOrFail($id);
+        $post->update($validated);
+        $post->categories()->sync($validated['categories']);
+        return redirect()->route('dashboard.posts.index');
+
     }
 
     /**
@@ -71,8 +89,9 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        $post = Post::findorfail($id);
+        $post = Post::findOrFail($id);
         $post->delete();
-        return redirect('/posts');
+        return redirect()->route('dashboard.posts.index');
+
     }
 }

@@ -13,7 +13,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('categories.index', ['categories' => $categories]);
+        return view('dashboard.categories.index', ['categories' => $categories]);
     }
 
     /**
@@ -21,7 +21,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('dashboard.categories.create');
          
     }
 
@@ -30,9 +30,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create($request->all());
-        return redirect('/categories');
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+        ]);
+    
+        Category::create($validatedData);
+        return redirect()->route('dashboard.categories.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -48,7 +53,7 @@ class CategoryController extends Controller
     public function edit(string $id)
     {
         $category = Category::FindOrFail($id);
-        return view('categories.edit',['category'=>$category]);
+        return view('dashboard.categories.edit',['category'=>$category]);
     }
 
     /**
@@ -56,9 +61,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $category = Category::FindOrFail($id);
-        $category->update($request->all());
-        return redirect('/categories');
+        $category = Category::findOrFail($id);
+    
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,
+        ]);
+    
+        $category->update($validatedData);
+        return redirect()->route('dashboard.categories.index');
     }
 
     /**
@@ -68,6 +78,6 @@ class CategoryController extends Controller
     {
         $category = Category::FindOrFail($id);
         $category->delete();
-        return redirect('/categories');
+        return redirect()->route('dashboard.categories.index');
     }
 }

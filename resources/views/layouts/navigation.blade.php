@@ -10,13 +10,23 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+            <!-- Navigation Links -->
+            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-nav-link>
+            
+                @if(auth()->user() && auth()->user()->role === 'admin')
+                    <x-nav-link :href="route('dashboard.posts.index')" :active="request()->routeIs('dashboard.posts.*')">
+                        {{ __('Posts') }}
                     </x-nav-link>
-                </div>
+            
+                    <x-nav-link :href="route('dashboard.categories.index')" :active="request()->routeIs('dashboard.categories.*')">
+                        {{ __('Categories') }}
+                    </x-nav-link>
+                @endif
             </div>
+
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

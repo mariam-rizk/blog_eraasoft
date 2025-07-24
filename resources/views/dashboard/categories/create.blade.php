@@ -1,13 +1,9 @@
-@extends('layouts.app')
-@section("title","Create Category")
-<!-- Page Header-->
-@section("header_content")
-    <div class="site-heading">
-        <h1>Create new Category</h1>
-        <span class="subheading">A Blog Theme by Start Bootstrap</span>
-    </div>
-@endsection
-@section("content")
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Create New Category
+        </h2>
+    </x-slot>
         <!-- Main Content-->
                 <main class="mb-4">
             <div class="container px-4 px-lg-5">
@@ -16,11 +12,17 @@
                        
                         <div class="my-5">
            
-                            <form id="contactForm" method="POST" action="/categories">
+                            <form id="contactForm" method="POST" action="{{ route('dashboard.categories.store') }}" novalidate>
                                 @csrf
                                 <div class="form-floating">
                                     <input class="form-control" id="name" type="text" placeholder="Enter category name here..." name="name" required />
                                     <label for="name">Name</label>
+                                    @error('name')
+                                    <div class="invalid-feedback d-block">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
                                 </div>
                                 <!-- Submit Button-->
                                 <button class="btn btn-primary text-uppercase " id="submitButton" type="submit">Add</button>
@@ -30,5 +32,5 @@
                 </div>
             </div>
         </main>
-@endsection
+</x-app-layout>
        

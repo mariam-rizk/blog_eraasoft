@@ -1,4 +1,4 @@
-@extends('layouts.website_app')
+@extends('layouts.website')
 @section("title","Contact_us")
 <!-- Page Header-->
 @section("header_photo", 'assets/img/contact-bg.jpg')
