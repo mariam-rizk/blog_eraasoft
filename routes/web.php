@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 
@@ -9,8 +10,12 @@ use App\Http\Controllers\CategoryController;
 //website
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/about', 'about')->name('about');
-Route::view('/post', 'post')->name('post');
 Route::view('/contact', 'contact')->name('contact');
+Route::get('/posts/{post}', [HomeController::class, 'show'])->name('posts.show');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
+Route::post('/comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply')->middleware('auth');
+
+
 
 //dashboard
 Route::get('/dashboard', function () {

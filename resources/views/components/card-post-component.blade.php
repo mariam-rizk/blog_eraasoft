@@ -1,17 +1,17 @@
 <div>
     <!-- The biggest battle is the war against ignorance. - Mustafa Kemal Atatürk -->
         <!-- Post preview-->
-        @props (['title', 'content', 'created_at'])
+        @props (['post'])
         <div class="post-preview">
-            <a href="post.html">
-                <h2 class="post-title">{{$title}}</h2>
-                <p class="post-content">{{$content}}</p>
+            <a href="{{ route('posts.show', $post->id) }}">
+                <h2 class="post-title">{{ $post->title }}</h2>
+                <p class="post-content">{{ $post->content }}</p>
             </a>
             
             <p class="post-meta">
                 Posted by
-                <a href="#!">Start Bootstrap</a>
-                on {{ $created_at  }}
+                <a href="#!">{{ $post->user->name ?? 'Unknown' }}</a>
+                on {{ $post->created_at  }}
             </p>
         </div>
         <!-- Divider-->
